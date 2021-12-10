@@ -7,28 +7,36 @@ function reviewPaths() {
         !!cs[0] && squares.push(...cs[0]);
     }
     let countedSquares = aggregateSquares(squares);
-    let multipleSquares = countedSquares.filter(x => countedSquares[x] > 1);
-    console.log(multipleSquares.length);
+    let multipleSquaresCount = getMultipleSquaresCount(countedSquares);
+    console.log(multipleSquaresCount);
+}
+
+function getMultipleSquaresCount(aSquares) {
+    let counter = 0;
+    Object.keys(aSquares).forEach(k => {
+        if (aSquares[k] > 1) {
+            counter++;
+        }
+    });
+    return counter;
 }
 
 function aggregateSquares(squares) {
-    REWORK THIS
-    // let grouping = [];//squares.map(x => { return { "x": x[0], "y": x[1] }; });
-    // for (square of squares) {
-    //     let name = square[0] + "-" + square[1];
-    //     if (!grouping[name]) {
-    //         grouping.push({ name, 1});
-    //     } else {
-    //         grouping[name]++;
-    //     }
-    // }
-    // return grouping;
+    const counts = {};
+    squares.forEach((el) => {
+        counts[el] = counts[el] ? (counts[el] += 1) : 1;
+    });
+    return counts;
 }
 
 function getCoveredSquares(x1, y1, x2, y2) {
     let squares = [];
-    y1 === y2 && squares.push(getHorizontalLines(x1, x2, y1));
-    x1 === x2 && squares.push(getVerticalLines(x1, y1, y2));
+    if (y1 === y2) {
+        squares.push(getHorizontalLines(x1, x2, y1))
+    }
+    else if (x1 === x2) {
+        squares.push(getVerticalLines(x1, y1, y2))
+    }
     return squares;
 }
 
