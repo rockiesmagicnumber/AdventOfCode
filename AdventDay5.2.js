@@ -29,11 +29,7 @@ function aggregateSquares(squares) {
     squares.forEach((el) => {
         let x = el[0] - 1,
             y = el[1] - 1;
-        try {
-            counts[x][y] = (!!counts[x][y] ? (counts[x][y] += 1) : 1);
-        } catch (e) {
-            console.log(e);
-        }
+        counts[x][y] = (!!counts[x][y] ? (counts[x][y] += 1) : 1);
     });
     return counts;
 }
