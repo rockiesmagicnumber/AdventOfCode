@@ -6,8 +6,8 @@ let getLowPoints = function(heights) {
     let lp = [];
     for (let i = 0; i < heights.length; i++) {
         for (let j = 0; j < heights[i].length; j++) {
-            allHeights.push({ "visited": false, "x": i, "y": j });
             let thisHeight = heights[i][j];
+            allHeights.push({ "visited": false, "row": i, "col": j, "val": thisHeight });
             if (i > 0) {
                 if (heights[i - 1][j] <= thisHeight) {
                     continue;
@@ -28,7 +28,7 @@ let getLowPoints = function(heights) {
                     continue;
                 }
             }
-            lp.push({ "visited": false, "x": i, "y": j });
+            lp.push({ "visited": false, "row": i, "col": j, "val": thisHeight });
         }
     }
     return lp;
@@ -36,8 +36,8 @@ let getLowPoints = function(heights) {
 
 let getNeighbors = function(node, allHeights) {
     return Array.from(allHeights).filter(n =>
-        (node.x === n.x && Math.abs(node.y - n.y) === 1) ||
-        (node.y === n.y && Math.abs(node.x - n.x) === 1)
+        (node.row === n.row && Math.abs(node.col - n.col) === 1) ||
+        (node.col === n.col && Math.abs(node.row - n.row) === 1)
     );
 }
 
@@ -45,12 +45,13 @@ let findBasin = function(lowPoint, allHeights) {
     let basin = [];
     let queue = [];
     queue.push(lowPoint);
-    basin.push(lowPoint);
-    lowPoint.visited = true;
     while (queue.length > 0) {
         let node = queue.shift();
-        getNeighbors(node, allHeights).forEach(n => {
-            if (!n.visited && heights[n.x][n.y] != 9) {
+        allHeights.find(h => h.row === node.row && h.col === node.col).visited = true;
+        basin.push(node);
+        let neighbors = getNeighbors(node, allHeights);
+        neighbors.forEach(n => {
+            if (!n.visited && n.val != 9) {
                 n.visited = true;
                 queue.push(n);
             }
@@ -71,4 +72,4 @@ let getBasins = function(lowPoints, allHeights) {
 let lowPoints = getLowPoints(heights);
 let basins = getBasins(lowPoints, allHeights);
 
-console.log(basins)
+console.log(basins.sort((a, b) => b.length - a.length).slice(0, 3).map(x => x.length).reduce((a, b) => a * b));
