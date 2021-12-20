@@ -1,5 +1,6 @@
 const heights = require('./AdventDay9.data.min.js');
 //const heights = require('./AdventDay9.data.test.js');
+
 let allHeights = [];
 
 let getLowPoints = function(heights) {
