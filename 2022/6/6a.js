@@ -4,9 +4,16 @@ fs.readFile("input.txt", "utf8", (err, inputData) => {
         console.error(err);
     }
 
-    let data = inputData.join();
+    let data = inputData;
+    console.log(data);
 
-    for (let i=3;i<data.length;i++){
-
+    for (let i = 4; i < data.length; i++) {
+        let bloc = data.slice(i - 4, i);
+        let blocDistinct = Array.from(new Set(bloc));
+        console.log(blocDistinct);
+        if (bloc.length === blocDistinct.length) {
+            console.log("Set found after character number " + i, bloc);
+            break;
+        }
     }
 });
